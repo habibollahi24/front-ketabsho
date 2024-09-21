@@ -1,4 +1,4 @@
-import { getCategoryList } from '@/services/query';
+import getCategoryList from '@/services/server/getCategoryList';
 import Link from 'next/link';
 import React from 'react';
 
