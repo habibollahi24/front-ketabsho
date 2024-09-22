@@ -3,7 +3,8 @@ import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 export default async function getSingleBlog(
-  slug: string
+  slug: string,
+  cookie?: string
 ): Promise<BlogType> {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken');
@@ -14,7 +15,8 @@ export default async function getSingleBlog(
     {
       headers: {
         'Content-Type': 'application/json',
-        Cookie: `${accessToken?.name}=${accessToken?.value};${refreshToken?.name}=${refreshToken?.value}`,
+        // Cookie: `${accessToken?.name}=${accessToken?.value};${refreshToken?.name}=${refreshToken?.value}`,
+        Cookie: cookie!,
       },
       credentials: 'include',
       method: 'GET',

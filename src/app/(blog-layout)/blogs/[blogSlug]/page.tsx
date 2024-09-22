@@ -2,6 +2,7 @@ import Comments from '@/components/comments/Comments';
 import { getCurrentUser } from '@/services/server/getCurrentUser';
 import getSingleBlog from '@/services/server/getSingleBlog';
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
@@ -23,8 +24,13 @@ export default async function SinglePostPage({
 }: {
   params: { blogSlug: string };
 }) {
-  const blog = await getSingleBlog(blogSlug);
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('accessToken');
+  const refreshToken = cookieStore.get('refreshToken');
 
+  const myCookie = `${accessToken?.name}=${accessToken?.value};${refreshToken?.name}=${refreshToken?.value}`;
+
+  const blog = await getSingleBlog(blogSlug, myCookie);
   const user = await getCurrentUser();
 
   return (
